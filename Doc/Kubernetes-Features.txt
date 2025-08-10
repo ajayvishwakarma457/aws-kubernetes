@@ -40,4 +40,25 @@
   Deployment + Service + ConfigMap/Secret + Ingress + HPA + Probes
 
 
+✅ You already know the key building blocks
+  Workloads: Pods, Deployments
+  Networking: Services, Ingress
+  Configuration & Security: ConfigMaps, Secrets, RBAC
+  Storage: Volumes, Persistent Volumes
+  Scaling & Health: Auto-scaling, Probes
+  Management & Packaging: Namespaces, Helm, CI/CD
+
+
+🔍 Extra features worth learning after this (for advanced control & optimization)
+  StatefulSets → For managing apps that need stable network IDs and storage (e.g., databases).
+  DaemonSets → Run a Pod on every node (e.g., for monitoring agents or logging tools).
+  Jobs & CronJobs → For one-time tasks or scheduled jobs.
+  NetworkPolicies → Control how Pods communicate with each other for better security.
+  PodSecurityStandards (PSS) → Built-in Kubernetes security rules for Pods.
+  Resource Requests & Limits → Control how much CPU/memory Pods can use.
+  Custom Resource Definitions (CRDs) → Extend Kubernetes with your own types and controllers.
+  Operators → Automate app-specific management (like database scaling or backups).
+
+
+
 
