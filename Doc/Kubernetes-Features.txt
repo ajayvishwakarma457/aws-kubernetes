@@ -1,0 +1,43 @@
+1. Pods 🛶
+  Smallest deployable unit, wraps one or more containers.
+  Containers inside a Pod share network and storage.
+
+2. Deployments 📦
+  Manage multiple replicas of Pods.
+  Handle rolling updates and rollbacks.
+
+3. Services 🌐
+  Provide stable networking to Pods.
+  Types: ClusterIP (internal), NodePort, LoadBalancer, ExternalName.
+
+4. ConfigMaps & Secrets 🔑
+  Store configuration and sensitive data separately from code.
+  Inject into Pods as environment variables or mounted files.
+
+5. Namespaces 🗂
+  Logical isolation of resources in a cluster.
+  Useful for separating environments (dev, staging, prod).
+
+6. Ingress 🚪
+  Routes external HTTP/HTTPS traffic into cluster services.
+  Supports host/path-based routing.
+
+7. Volumes & Persistent Volumes 💾
+  Provide persistent storage beyond Pod lifecycle.
+
+8. Auto-scaling 📈
+  Horizontal Pod Autoscaler (HPA) to scale based on CPU/memory metrics.
+
+9. Probes 🩺
+  Liveness Probe → checks if container is healthy.
+  Readiness Probe → checks if container is ready to serve traffic.
+
+10. RBAC (Role-Based Access Control) 🛡
+  Controls who can do what in the cluster.
+
+
+💡 As a developer, the most used combo is:
+  Deployment + Service + ConfigMap/Secret + Ingress + HPA + Probes
+
+
+
