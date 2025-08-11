@@ -62,3 +62,18 @@
 
 
 
+
+Practice Plan
+  Pods → Create and run your first Pod, understand its lifecycle.
+  Deployments → Scale Pods, update them, and roll back changes.
+  Services → Expose Pods inside the cluster and to the outside world.
+  Ingress → Route external traffic to different services using paths/hosts.
+  ConfigMaps & Secrets → Inject configuration and sensitive data into Pods.
+  Namespaces → Organize and isolate resources.
+  Volumes & Persistent Volumes → Store data that survives Pod restarts.
+  Auto-scaling (HPA) → Scale Pods automatically based on load.
+  Probes → Add health checks to ensure reliability.
+  RBAC → Control user permissions in the cluster.
+
+
+
