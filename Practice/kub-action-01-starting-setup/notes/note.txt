@@ -36,3 +36,4 @@ kubectl delete deployment first-app
 kubectl delete service first-app
 
 start from 198
+
