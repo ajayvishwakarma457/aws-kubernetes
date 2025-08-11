@@ -1,0 +1,15 @@
+
+minikube status 
+minikube start --driver=docker
+minikube stop
+minikube delete
+minikube dashboard 
+
+kubectl get deployments
+
+build and push the image 
+docker build -t ajayvishwakarma457/kub-data-demo .
+docker push ajayvishwakarma457/kub-data-demo
+
+kubectl apply -f=deployment.yaml -f=service.yaml
+minikube service story-service

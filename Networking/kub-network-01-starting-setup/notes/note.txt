@@ -1,0 +1,16 @@
+
+minikube status 
+minikube start --driver=docker
+minikube stop
+minikube delete
+minikube dashboard 
+
+kubectl get deployments
+kubectl get services
+
+build and push the image for user (goto to users-api folder)
+docker build -t ajayvishwakarma457/kub-demo-users .
+docker push ajayvishwakarma457/kub-demo-users
+
+apply deployment (goto to kubernetes folder)
+kubectl apply -f=users-deployment.yaml

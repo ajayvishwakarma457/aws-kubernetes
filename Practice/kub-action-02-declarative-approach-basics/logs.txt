@@ -1,0 +1,78 @@
+
+==> Audit <==
+|-----------|----------------------|----------|------|---------|---------------------|---------------------|
+|  Command  |         Args         | Profile  | User | Version |     Start Time      |      End Time       |
+|-----------|----------------------|----------|------|---------|---------------------|---------------------|
+| start     |                      | minikube | ajay | v1.35.0 | 31 Jan 25 08:12 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 31 Jan 25 08:12 IST | 31 Jan 25 08:18 IST |
+| dashboard |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:29 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:29 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:29 IST | 31 Jan 25 21:29 IST |
+| dashboard |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:30 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:32 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:32 IST | 31 Jan 25 21:32 IST |
+| dashboard |                      | minikube | ajay | v1.35.0 | 31 Jan 25 21:33 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:23 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:23 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:24 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:30 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:32 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:34 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:36 IST |                     |
+| start     | --driver=docker      | minikube | ajay | v1.35.0 | 03 Feb 25 08:38 IST |                     |
+| start     | --driver=docker      | minikube | ajay | v1.35.0 | 03 Feb 25 08:38 IST |                     |
+| start     | --driver=virtualbox  | minikube | ajay | v1.35.0 | 03 Feb 25 08:48 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 03 Feb 25 08:56 IST |                     |
+| delete    |                      | minikube | ajay | v1.35.0 | 03 Feb 25 09:00 IST | 03 Feb 25 09:00 IST |
+| start     |                      | minikube | ajay | v1.35.0 | 03 Feb 25 09:00 IST | 03 Feb 25 09:00 IST |
+| dashboard |                      | minikube | ajay | v1.35.0 | 03 Feb 25 09:00 IST |                     |
+| image     | load nodejs-k8s-demo | minikube | ajay | v1.35.0 | 03 Feb 25 09:17 IST | 03 Feb 25 09:18 IST |
+| ip        |                      | minikube | ajay | v1.35.0 | 03 Feb 25 09:19 IST | 03 Feb 25 09:19 IST |
+| dashboard |                      | minikube | ajay | v1.35.0 | 05 Feb 25 21:33 IST |                     |
+| start     |                      | minikube | ajay | v1.35.0 | 05 Feb 25 21:33 IST | 05 Feb 25 21:33 IST |
+| dashboard |                      | minikube | ajay | v1.35.0 | 05 Feb 25 21:33 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 05 Feb 25 21:51 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 05 Feb 25 22:25 IST |                     |
+| service   | first-app            | minikube | ajay | v1.35.0 | 05 Feb 25 22:45 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 07 Feb 25 21:49 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:08 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:17 IST |                     |
+| start     | --driver=docker      | minikube | ajay | v1.35.0 | 07 Feb 25 22:17 IST |                     |
+| dashboard |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:18 IST |                     |
+| stop      |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:21 IST |                     |
+| stop      |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:21 IST |                     |
+| stop      |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:22 IST |                     |
+| start     | --driver=docker      | minikube | ajay | v1.35.0 | 07 Feb 25 22:26 IST |                     |
+| stop      |                      | minikube | ajay | v1.35.0 | 07 Feb 25 22:28 IST |                     |
+|-----------|----------------------|----------|------|---------|---------------------|---------------------|
+
+
+==> Last Start <==
+Log file created at: 2025/02/07 22:26:46
+Running on machine: Ajays-MacBook-Air
+Binary: Built with gc go1.23.4 for darwin/arm64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0207 22:26:46.214799    1093 out.go:345] Setting OutFile to fd 1 ...
+I0207 22:26:46.215031    1093 out.go:397] isatty.IsTerminal(1) = true
+I0207 22:26:46.215033    1093 out.go:358] Setting ErrFile to fd 2...
+I0207 22:26:46.215035    1093 out.go:397] isatty.IsTerminal(2) = true
+I0207 22:26:46.215245    1093 root.go:338] Updating PATH: /Users/ajay/.minikube/bin
+I0207 22:26:46.216850    1093 out.go:352] Setting JSON to false
+I0207 22:26:46.232528    1093 start.go:129] hostinfo: {"hostname":"Ajays-MacBook-Air.local","uptime":157,"bootTime":1738947249,"procs":481,"os":"darwin","platform":"darwin","platformFamily":"Standalone Workstation","platformVersion":"14.6","kernelVersion":"23.6.0","kernelArch":"arm64","virtualizationSystem":"","virtualizationRole":"","hostId":"68b8f434-f8f3-522f-a4fc-94ceafd7adb2"}
+W0207 22:26:46.232583    1093 start.go:137] gopshost.Virtualization returned error: not implemented yet
+I0207 22:26:46.237258    1093 out.go:177] 😄  minikube v1.35.0 on Darwin 14.6 (arm64)
+I0207 22:26:46.243695    1093 config.go:182] Loaded profile config "minikube": Driver=docker, ContainerRuntime=docker, KubernetesVersion=v1.32.0
+I0207 22:26:46.243723    1093 notify.go:220] Checking for updates...
+I0207 22:26:46.245040    1093 driver.go:394] Setting default libvirt URI to qemu:///system
+W0207 22:26:46.412212    1093 docker.go:181] docker version returned error: exit status 1
+I0207 22:26:46.415801    1093 out.go:177] ✨  Using the docker driver based on existing profile
+I0207 22:26:46.421787    1093 start.go:297] selected driver: docker
+I0207 22:26:46.421798    1093 start.go:901] validating driver "docker" against &{Name:minikube KeepContext:false EmbedCerts:false MinikubeISO: KicBaseImage:gcr.io/k8s-minikube/kicbase:v0.0.46@sha256:fd2d445ddcc33ebc5c6b68a17e6219ea207ce63c005095ea1525296da2d1a279 Memory:4000 CPUs:2 DiskSize:20000 Driver:docker HyperkitVpnKitSock: HyperkitVSockPorts:[] DockerEnv:[] ContainerVolumeMounts:[] InsecureRegistry:[] RegistryMirror:[] HostOnlyCIDR:192.168.59.1/24 HypervVirtualSwitch: HypervUseExternalSwitch:false HypervExternalAdapter: KVMNetwork:default KVMQemuURI:qemu:///system KVMGPU:false KVMHidden:false KVMNUMACount:1 APIServerPort:8443 DockerOpt:[] DisableDriverMounts:false NFSShare:[] NFSSharesRoot:/nfsshares UUID: NoVTXCheck:false DNSProxy:false HostDNSResolver:true HostOnlyNicType:virtio NatNicType:virtio SSHIPAddress: SSHUser:root SSHKey: SSHPort:22 KubernetesConfig:{KubernetesVersion:v1.32.0 ClusterName:minikube Namespace:default APIServerHAVIP: APIServerName:minikubeCA APIServerNames:[] APIServerIPs:[] DNSDomain:cluster.local ContainerRuntime:docker CRISocket: NetworkPlugin:cni FeatureGates: ServiceCIDR:10.96.0.0/12 ImageRepository: LoadBalancerStartIP: LoadBalancerEndIP: CustomIngressCert: RegistryAliases: ExtraOptions:[] ShouldLoadCachedImages:true EnableDefaultCNI:false CNI:} Nodes:[{Name: IP:192.168.49.2 Port:8443 KubernetesVersion:v1.32.0 ContainerRuntime:docker ControlPlane:true Worker:true}] Addons:map[dashboard:true default-storageclass:true storage-provisioner:true] CustomAddonImages:map[] CustomAddonRegistries:map[] VerifyComponents:map[apiserver:true system_pods:true] StartHostTimeout:6m0s ScheduledStop:<nil> ExposedPorts:[] ListenAddress: Network: Subnet: MultiNodeRequested:false ExtraDisks:0 CertExpiration:26280h0m0s Mount:false MountString:/Users:/minikube-host Mount9PVersion:9p2000.L MountGID:docker MountIP: MountMSize:262144 MountOptions:[] MountPort:0 MountType:9p MountUID:docker BinaryMirror: DisableOptimizations:false DisableMetrics:false CustomQemuFirmwarePath: SocketVMnetClientPath: SocketVMnetPath: StaticIP: SSHAuthSock: SSHAgentPID:0 GPUs: AutoPauseInterval:1m0s}
+I0207 22:26:46.421987    1093 start.go:912] status for docker: {Installed:true Healthy:false Running:false NeedsImprovement:false Error:"docker version --format {{.Server.Os}}-{{.Server.Version}}:{{.Server.Platform.Name}}" exit status 1: Cannot connect to the Docker daemon at unix:///Users/ajay/.docker/run/docker.sock. Is the docker daemon running? Reason:PROVIDER_DOCKER_NOT_RUNNING Fix:Start the Docker service Doc:https://minikube.sigs.k8s.io/docs/drivers/docker/ Version:}
+I0207 22:26:46.425843    1093 out.go:201] 
+W0207 22:26:46.429200    1093 out.go:270] 💣  Exiting due to PROVIDER_DOCKER_NOT_RUNNING: "docker version --format <no value>-<no value>:<no value>" exit status 1: Cannot connect to the Docker daemon at unix:///Users/ajay/.docker/run/docker.sock. Is the docker daemon running?
+W0207 22:26:46.429213    1093 out.go:270] 💡  Suggestion: Start the Docker service
+W0207 22:26:46.429225    1093 out.go:270] 📘  Documentation: https://minikube.sigs.k8s.io/docs/drivers/docker/
+I0207 22:26:46.437437    1093 out.go:201] 
+
+

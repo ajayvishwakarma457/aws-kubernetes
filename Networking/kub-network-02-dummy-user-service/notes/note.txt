@@ -1,0 +1,25 @@
+
+minikube status 
+minikube start --driver=docker
+minikube stop
+minikube delete
+minikube dashboard 
+
+kubectl get deployments
+kubectl get deployments
+
+build and push the image for users
+docker build -t ajayvishwakarma457/kub-demo-users .
+docker push ajayvishwakarma457/kub-demo-users
+
+build and push the image for auth
+docker build -t ajayvishwakarma457/kube-demo-auth .
+docker push ajayvishwakarma457/kube-demo-auth
+
+
+kubectl apply -f=users-deployment.yaml -f=users-service.yaml
+minikube service users-service
+
+kubectl delete -f=users-deployment.yaml
+kubectl delete -f=users-service.yaml
+

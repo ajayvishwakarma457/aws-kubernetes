@@ -1,0 +1,38 @@
+
+docker build -t kub-first-app .
+
+minikube start --driver=docker 
+minikube status 
+minikube dashboard 
+
+--tag and push to docker hub repository 
+docker tag kub-first-app ajayvishwakarma457/kub-first-app
+docker push ajayvishwakarma457/kub-first-app
+
+kubectl create deployment first-app  --image=ajayvishwakarma457/kub-first-app
+kubectl get deployments
+kubectl delete deployment first-app
+
+kubectl get pods
+
+kubectl expose deployment first-app --type=LoadBalancer --port=8080
+kubectl get services
+minikube service first-app
+
+kubectl scale deployment/first-app --replicas=3
+
+kubectl get pods
+
+docker build -t ajayvishwakarma457/kub-first-app:2 .
+docker push ajayvishwakarma457/kub-first-app:2 
+kubectl set image deployment/first-app kub-first-app=ajayvishwakarma457/kub-first-app:2
+kubectl rollout status deployment/first-app
+kubectl rollout undo deployment/first-app
+kubectl rollout history deployment/first-app
+kubectl rollout history deployment/first-app --revision=3
+kubectl rollout undo deployment/first-app --to-revision=1
+
+kubectl delete deployment first-app
+kubectl delete service first-app
+
+start from 198

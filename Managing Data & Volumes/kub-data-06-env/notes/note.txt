@@ -1,0 +1,30 @@
+
+minikube status 
+minikube start --driver=docker
+minikube stop
+minikube delete
+minikube dashboard 
+
+kubectl get deployments
+
+build and push the image 
+docker build -t ajayvishwakarma457/kub-data-demo .
+docker push ajayvishwakarma457/kub-data-demo
+
+
+build and push the image 
+docker build -t ajayvishwakarma457/kub-data-demo:2 .
+docker push ajayvishwakarma457/kub-data-demo:2
+
+kubectl apply -f=host-pv.yaml 
+kubectl apply -f=host-pvc.yaml 
+kubectl apply -f=environment.yaml 
+kubectl apply -f=deployment.yaml -f=service.yaml
+minikube service story-service
+
+kubectl delete -f=deployment.yaml
+kubectl delete -f=service.yaml
+
+kubectl get sc
+kubectl get pv
+kubectl get pvc

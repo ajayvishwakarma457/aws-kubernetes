@@ -1,0 +1,13 @@
+
+
+create deployment
+kubectl apply -f=deployment.yaml
+kubectl delete -f=deployment.yaml
+
+
+create service 
+kubectl apply -f service.yaml
+kubectl delete -f service.yaml
+
+kubectl get services
+minikube service backend
