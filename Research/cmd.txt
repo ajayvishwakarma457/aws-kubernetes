@@ -1,0 +1,28 @@
+
+minikube status 
+minikube start --driver=docker
+minikube stop
+minikube delete
+minikube dashboard 
+
+kubectl get deployments
+
+build and push the image 
+docker build -t ajayvishwakarma457/kub-first-app .
+docker push ajayvishwakarma457/kub-first-app
+
+kubectl apply -f=deployment.yaml -f=service.yaml
+minikube service node-ser-1
+
+kubectl delete -f deployment.yaml -f service.yaml
+
+kubectl delete deployment second-app-deployment
+kubectl delete service backend
+
+kubectl get deployments
+kubectl get svc
+
+
+kubectl describe deploy <deployment_name>
+kubectl rollout history deploy/node-dep-1
+kubectl rollout history deploy node-dep-1
