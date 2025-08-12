@@ -1,14 +1,16 @@
 const express = require('express');
+
 const app = express();
 
-const PORT = 3000;
-
-// Create a simple route
 app.get('/', (req, res) => {
-  res.send('Hello World from Express.js!');
+  res.send(`
+    <h1>Hello from this NodeJS app!</h1>
+    <p>Try sending a request to /error and see what happens</p>
+  `);
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+app.get('/error', (req, res) => {
+  process.exit(1);
 });
+
+app.listen(8080);
