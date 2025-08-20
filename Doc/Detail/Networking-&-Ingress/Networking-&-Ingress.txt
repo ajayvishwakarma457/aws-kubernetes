@@ -1,1 +1,63 @@
+🌐 Networking & Ingress in Kubernetes
 
+1. Networking Basics
+    In Kubernetes, every Pod gets its own IP address. To let Pods talk to each other or the outside world, K8s provides:
+      Pod-to-Pod → direct communication inside the cluster.
+      Service → stable virtual IP (ClusterIP, NodePort, LoadBalancer).
+          ClusterIP → internal only (default).
+          NodePort → exposes on every node’s IP at a fixed port.
+          LoadBalancer → integrates with cloud load balancer (AWS ELB, GCP LB).
+
+
+================================================================================================================================================================
+
+2. Ingress (smart router for HTTP/HTTPS)
+
+    Instead of exposing each Service separately, Ingress lets you route external traffic into the cluster.
+        Acts like an entry point / reverse proxy.
+        Needs an Ingress Controller (e.g., NGINX, Traefik).
+        Can handle:
+            Path-based routing → /api → Service A, /shop → Service B
+            Host-based routing → api.example.com → Service A, web.example.com → Service B
+            SSL/TLS termination (HTTPS).
+
+
+
+================================================================================================================================================================
+
+3. Example Ingress YAML
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: demo.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 80
+      - path: /web
+        pathType: Prefix
+        backend:
+          service:
+            name: web-service
+            port:
+              number: 80
+
+
+👉 Now:
+http://demo.example.com/api → goes to api-service
+http://demo.example.com/web → goes to web-service
+
+✅ Summary
+  Networking ensures Pods, Services, and external clients can talk.
+  Ingress = smart HTTP(S) entry point that routes traffic to the right Service.
