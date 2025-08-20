@@ -1,1 +1,71 @@
+Deploy Your First App
+  Let’s deploy a simple web application on Kubernetes.
+
+
+Step 1: Create a Deployment + Service
+  deployment.yaml
+
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: hello-deploy
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: hello
+      template:
+        metadata:
+          labels:
+            app: hello
+        spec:
+          containers:
+          - name: hello
+            image: nginxdemos/hello:latest   # simple web app
+            ports:
+            - containerPort: 80
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: hello-svc
+    spec:
+      selector:
+        app: hello
+      ports:
+      - port: 80
+        targetPort: 80
+      type: NodePort    # exposes on <NodeIP>:<NodePort>
+
+
+=======================================================================================================================================
+
+  Step 2: Deploy it
+    kubectl apply -f deployment.yaml
+    kubectl get pods
+    kubectl get svc
+
+=======================================================================================================================================
+
+  Step 3: Scale it
+    kubectl scale deployment hello-deploy --replicas=4
+    kubectl get pods
+
+=======================================================================================================================================
+
+  Step 4: Update it
+    kubectl set image deployment/hello-deploy hello=nginxdemos/hello:plain-text
+    kubectl rollout status deployment hello-deploy
+
+=======================================================================================================================================
+
+  Step 5: Rollback (if needed)
+    kubectl rollout undo deployment hello-deploy
+
+=======================================================================================================================================
+
+  ✅ What you learned:
+    Created a Deployment to manage pods.
+    Exposed it with a Service.
+    Used kubectl to scale, update, and rollback the app.
 
