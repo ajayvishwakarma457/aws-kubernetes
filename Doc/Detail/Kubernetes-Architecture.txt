@@ -1,1 +1,66 @@
 
+🌐 Kubernetes Architecture (High-level)
+Kubernetes follows a Master–Worker (Control Plane – Node) architecture.
+
+1. Control Plane (the “brain” 🧠)
+  This is the master part of Kubernetes. It makes global decisions about the cluster (scheduling, scaling, etc.).
+
+    API Server
+      Entry point for all commands (kubectl, dashboard, clients).
+      Exposes REST API.
+
+    etcd
+      A distributed key-value store.
+      Holds cluster state (pods, services, secrets, configs).
+
+    Scheduler
+      Decides which node runs which pod.
+      Based on CPU/memory, taints/tolerations, affinity rules.
+
+    Controller Manager
+      Runs controllers (replica set controller, node controller, job controller, etc.).
+      Ensures the cluster’s desired state = actual state.
+
+====================================================================================================================================
+
+2. Worker Nodes (the “muscles” 💪)
+    These are the servers (VMs or bare metal) where your apps (pods) actually run.
+
+     Kubelet
+        Agent that runs on each node.
+        Talks to API Server, makes sure pods are running.
+
+     Kube Proxy
+        Manages networking, routes traffic to the correct pod.
+
+    Container Runtime
+        Software that runs the containers (Docker, containerd, CRI-O).
+
+    Pods
+        Smallest deployable unit in K8s (one or more containers).
+
+
+====================================================================================================================================
+
+3. Add-ons (optional but common)
+    DNS (CoreDNS) → internal DNS for services/pods.
+    Ingress Controller (e.g., NGINX) → HTTP routing.
+    Metrics Server → provides resource usage for HPA.
+    Dashboard → Web UI for managing cluster.
+
+====================================================================================================================================
+
+🖼️ Simple Flow
+    You run: kubectl apply -f deployment.yaml
+    API Server writes it into etcd.
+    Scheduler picks the best node.
+    Kubelet on that node starts the pod using container runtime.
+    Kube Proxy ensures network routing so you can reach it.
+    Controller Manager watches and keeps things healthy.
+
+====================================================================================================================================
+
+✅ Summary (short & simple)
+    Control Plane = API Server, etcd, Scheduler, Controller Manager (manages cluster state).
+    Worker Nodes = Kubelet, Kube Proxy, Container Runtime, Pods (run your apps).
+    Add-ons = DNS, Ingress, Metrics, Dashboard.
