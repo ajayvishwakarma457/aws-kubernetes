@@ -61,3 +61,35 @@ http://demo.example.com/web → goes to web-service
 ✅ Summary
   Networking ensures Pods, Services, and external clients can talk.
   Ingress = smart HTTP(S) entry point that routes traffic to the right Service.
+
+
+
+================================================================================================================================================================
+
+1.png Diagram Explanation
+
+    1. Networking & Ingress Flow
+        User (outside the cluster)
+            A client/browser makes a request to your Kubernetes cluster (e.g., http://demo.example.com/api).
+
+    2. Ingress (entry point)
+        The Ingress Controller (like NGINX Ingress) receives that request.
+
+    3. Routing
+        If the request path is /api → forward to Service A.
+        If the request path is /web → forward to Service B.
+
+    4. Service (inside cluster)
+        A Service is a stable virtual IP that load-balances traffic to the right Pods.
+        Example: api-service sends traffic to all Pods labeled app=api.
+
+    5. Pods
+        These are your app containers actually running the code.
+        Services distribute traffic across multiple Pods to ensure high availability.
+
+
+✅ So the flow is:
+    User → Ingress → Service → Pods
+    This way, you don’t expose Pods directly. You only expose an Ingress, which is easier to secure, manage, and scale.
+
+
