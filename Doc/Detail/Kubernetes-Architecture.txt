@@ -64,3 +64,5 @@ Kubernetes follows a Master–Worker (Control Plane – Node) architecture.
     Control Plane = API Server, etcd, Scheduler, Controller Manager (manages cluster state).
     Worker Nodes = Kubelet, Kube Proxy, Container Runtime, Pods (run your apps).
     Add-ons = DNS, Ingress, Metrics, Dashboard.
+
+
