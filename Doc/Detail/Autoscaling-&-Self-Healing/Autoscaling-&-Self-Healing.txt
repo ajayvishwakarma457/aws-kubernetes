@@ -35,3 +35,132 @@
 
   Autoscaling = automatically adjusting the number of Pods (or nodes) to handle load.
   Self-Healing = Kubernetes restarts or replaces failed Pods/nodes to keep apps healthy.
+
+==============================================================================================================================================================
+
+Example
+
+Awesome—here’s a hands‑on demo you can paste straight into your docs. It shows self‑healing (probes) and autoscaling (HPA).
+
+Autoscaling & Self‑Healing — Demo
+  Prereq: metrics server available.
+    Minikube: minikube addons enable metrics-server
+    kind/others: install metrics-server if not present.
+
+1) Deploy app + Service + Probes
+    Save as app.yaml:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: php-apache
+      spec:
+        replicas: 2
+        selector:
+          matchLabels: { app: php-apache }
+        template:
+          metadata:
+            labels: { app: php-apache }
+          spec:
+            containers:
+              - name: app
+                image: registry.k8s.io/hpa-example
+                ports:
+                  - containerPort: 80
+                # ---- Self-healing ----
+                readinessProbe:
+                  httpGet: { path: "/", port: 80 }
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                livenessProbe:
+                  httpGet: { path: "/", port: 80 }
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                # CPU request needed so HPA has a baseline
+                resources:
+                  requests: { cpu: "200m" }
+                  limits:   { cpu: "500m" }
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: php-apache
+      spec:
+        selector: { app: php-apache }
+        ports:
+          - port: 80
+            targetPort: 80
+
+  Apply:
+    kubectl apply -f app.yaml
+    kubectl get deploy,po,svc
+
+    What you get:
+      Probes make K8s remove unready pods from traffic and restart unhealthy ones (self‑healing).
+      A Service for stable access.
+
+============================================================
+
+2) Add an HPA (CPU‑based autoscaling)
+    Save as hpa.yaml:
+
+      apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      metadata:
+        name: php-apache-hpa
+      spec:
+        scaleTargetRef:
+          apiVersion: apps/v1
+          kind: Deployment
+          name: php-apache
+        minReplicas: 2
+        maxReplicas: 10
+        metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 50   # scale up when avg CPU > 50%
+
+    Apply & watch:
+      kubectl apply -f hpa.yaml
+      kubectl get hpa -w
+
+============================================================
+
+3) Generate load (to trigger scaling)
+
+  # Start a tiny load generator that hammers the Service
+    kubectl run loader --image=busybox --restart=Never -- \
+    /bin/sh -c 'while true; do wget -q -O- http://php-apache > /dev/null; done'
+
+  Observe:
+    kubectl get hpa -w               # watch CPU% and replicas increase
+    kubectl get pods -l app=php-apache -w
+
+  Stop load:
+    kubectl delete pod loader
+    # After a few minutes, HPA scales back down toward minReplicas
+    kubectl get hpa
+
+============================================================
+
+4) Prove self‑healing (optional)
+  Kill a pod:
+    POD=$(kubectl get pod -l app=php-apache -o jsonpath='{.items[0].metadata.name}')
+    kubectl delete pod $POD
+    kubectl get pods -l app=php-apache -w   # new pod appears automatically
+
+============================================================
+
+5) Cleanup
+    kubectl delete -f hpa.yaml -f app.yaml
+
+
+
+
+
+
+
+
+
