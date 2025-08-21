@@ -1,1 +1,223 @@
+CI/CD & Helm
+  Use Helm to package your Kubernetes YAML into a reusable chart, and a CI/CD pipeline (e.g., GitHub Actions) to build, push, and deploy automatically.
 
+A) Helm: Package Your App
+  1) Create a chart
+    helm create hello-chart
+    # or start minimal: mkdir -p hello-chart/{templates}; touch hello-chart/Chart.yaml hello-chart/values.yaml
+
+  hello-chart/Chart.yaml
+    apiVersion: v2
+    name: hello-chart
+    version: 0.1.0
+    description: Demo web app
+    type: application
+
+  hello-chart/values.yaml
+      image:
+        repository: your-reg/hello
+        tag: "latest"
+        pullPolicy: IfNotPresent
+      
+      replicaCount: 2
+      
+      service:
+        type: ClusterIP
+        port: 80
+        targetPort: 80
+      
+      ingress:
+        enabled: false
+        className: nginx
+        host: demo.example.com
+        path: /
+
+      hello-chart/templates/deployment.yaml
+        apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: {{ include "hello-chart.fullname" . }}
+          spec:
+            replicas: {{ .Values.replicaCount }}
+            selector:
+              matchLabels: { app: {{ include "hello-chart.name" . }} }
+            template:
+              metadata:
+                labels: { app: {{ include "hello-chart.name" . }} }
+              spec:
+                containers:
+                  - name: web
+                    image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+                    imagePullPolicy: {{ .Values.image.pullPolicy }}
+                    ports: [{ containerPort: {{ .Values.service.targetPort }} }]
+                    readinessProbe:
+                      httpGet: { path: "/", port: {{ .Values.service.targetPort }} }
+                    livenessProbe:
+                      httpGet: { path: "/", port: {{ .Values.service.targetPort }} }
+
+          hello-chart/templates/service.yaml
+            apiVersion: v1
+              kind: Service
+              metadata:
+                name: {{ include "hello-chart.fullname" . }}
+              spec:
+                selector: { app: {{ include "hello-chart.name" . }} }
+                ports:
+                  - port: {{ .Values.service.port }}
+                    targetPort: {{ .Values.service.targetPort }}
+                type: {{ .Values.service.type }}
+
+          hello-chart/templates/ingress.yaml
+              {{- if .Values.ingress.enabled }}
+              apiVersion: networking.k8s.io/v1
+              kind: Ingress
+              metadata:
+                name: {{ include "hello-chart.fullname" . }}
+                annotations:
+                  kubernetes.io/ingress.class: {{ .Values.ingress.className }}
+              spec:
+                rules:
+                  - host: {{ .Values.ingress.host }}
+                    http:
+                      paths:
+                      - path: {{ .Values.ingress.path }}
+                        pathType: Prefix
+                        backend:
+                          service:
+                            name: {{ include "hello-chart.fullname" . }}
+                            port:
+                              number: {{ .Values.service.port }}
+              {{- end }}
+
+          Install/Upgrade
+            # first time
+            helm upgrade --install hello hello-chart -n demo --create-namespace
+            
+            # update image tag or values
+            helm upgrade --install hello hello-chart -n demo --set image.tag=1.2.3
+            
+            # rollback
+            helm rollback hello 1
+
+
+==========================================================================================================================================================
+
+B) CI/CD: Build → Push → Deploy (GitHub Actions)
+
+    This pipeline:
+    Lints & tests your app
+    Builds and pushes Docker image
+    Deploys with Helm (versioned by git SHA)
+
+  .github/workflows/cicd.yaml
+
+            name: CI/CD
+      
+      on:
+        push:
+          branches: [ "main" ]
+        pull_request:
+      
+      env:
+        IMAGE: your-reg/hello
+        CHART_DIR: hello-chart
+        RELEASE_NAME: hello
+        NAMESPACE: demo
+      
+      jobs:
+        build-test:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with: { node-version: "20" }
+            - run: npm ci
+            - run: npm test --if-present
+      
+        docker:
+          needs: build-test
+          runs-on: ubuntu-latest
+          permissions:
+            contents: read
+            packages: write
+          steps:
+            - uses: actions/checkout@v4
+            - name: Docker login
+              run: echo "${{ secrets.REGISTRY_TOKEN }}" | docker login -u ${{ secrets.REGISTRY_USER }} --password-stdin your-reg
+            - name: Build & push
+              run: |
+                TAG=${GITHUB_SHA::7}
+                docker build -t $IMAGE:$TAG -t $IMAGE:latest .
+                docker push $IMAGE:$TAG
+                docker push $IMAGE:latest
+            - name: Export image tag
+              run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+      
+        deploy:
+          needs: docker
+          runs-on: ubuntu-latest
+          if: github.ref == 'refs/heads/main'
+          steps:
+            - uses: actions/checkout@v4
+      
+            # kubectl/helm setup
+            - name: Install kubectl
+              run: curl -L https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl -o kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+            - name: Install Helm
+              run: curl -L https://get.helm.sh/helm-v3.15.2-linux-amd64.tar.gz | tar zx && sudo mv linux-amd64/helm /usr/local/bin/helm
+      
+            # Auth to cluster (example: kubeconfig secret)
+            - name: Configure kubeconfig
+              run: |
+                mkdir -p $HOME/.kube
+                echo "${{ secrets.KUBECONFIG_DATA }}" | base64 -d > $HOME/.kube/config
+      
+            # Deploy with Helm using the image tag from previous job
+            - name: Helm upgrade/install
+              run: |
+                helm upgrade --install $RELEASE_NAME $CHART_DIR -n $NAMESPACE --create-namespace \
+                  --set image.repository=$IMAGE \
+                  --set image.tag=${IMAGE_TAG} \
+                  --set replicaCount=2
+
+      Secrets to set in repo settings → Actions → Secrets and variables → Actions:
+      REGISTRY_USER, REGISTRY_TOKEN → Docker registry creds
+      KUBECONFIG_DATA → base64‑encoded kubeconfig for your target cluster
+
+
+==========================================================================================================================================================
+
+C) Environments (dev/stage/prod) with values files
+    Create per‑env overrides:
+      hello-chart/values-dev.yaml
+      hello-chart/values-prod.yaml
+
+    Example values-prod.yaml:
+      replicaCount: 4
+      image:
+        tag: "prod-{{ .Release.Revision }}"   # (optional; you can override via CI)
+      ingress:
+        enabled: true
+        host: app.example.com
+
+    Deploy to prod:
+      helm upgrade --install hello hello-chart -n prod -f hello-chart/values-prod.yaml \
+      --set image.tag=1.2.3
+
+==========================================================================================================================================================
+
+D) Tips & Troubleshooting
+
+    Dry run & diff before deploying:
+    helm upgrade --install hello hello-chart -n demo --dry-run --debug
+
+    See rendered YAML:
+    helm template hello hello-chart -n demo
+
+    Watch rollout:
+    kubectl rollout status deploy/hello -n demo
+
+    Roll back quickly:
+    helm rollback hello <REVISION>
+
+    Keep charts small: push secrets via External Secrets or CI, not inside the chart.
